@@ -1,0 +1,182 @@
+<div class="container">
+  <mat-card class="mat-elevation-z8">
+      <div style="color:black;text-align: center;">
+        <h2>Employee List</h2>
+      </div>
+    <br><br>
+    <mat-card-content>
+      <form [formGroup]="employeeForm" (ngSubmit)="onFormSubmit()">
+        <h2>Create/Edit Employee</h2>
+        <mat-card class="mat-elevation-z8" style="box-shadow: 0 3px 5px -1px rgba(0,0,0,.2), 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12);">
+      <table class="table-mat-view">
+        <tr>
+          <td class="tbl1">
+            <label for="name">Full Name</label>
+            <br>
+            <mat-form-field class="fields">
+              <input formControlName="name" matInput autocomplete="off" required>
+            </mat-form-field>
+            <mat-error>
+              <div *ngIf="employeeForm.get('name').invalid && (employeeForm.get('name').touched || employeeForm.get('name').dirty)" class="validation-msg">Please Enter Name</div>
+            </mat-error>
+          </td>
+          <td class="tbl1">
+            <label for="avatar">Image URL</label>
+            <br>
+            <mat-form-field class="fields">
+              <input formControlName="avatar" matInput autocomplete="off" required>
+            </mat-form-field>
+            <mat-error>
+              <div *ngIf="employeeForm.get('avatar').invalid && (employeeForm.get('avatar').touched || employeeForm.get('avatar').dirty)" class="validation-msg">Please enter an image URL</div>
+            </mat-error>
+          </td>
+          <td class="tbl1">
+            <label for="email">Email ID</label>
+            <br>
+            <mat-form-field class="fields">
+              <input formControlName="email" matInput autocomplete="off" required>
+            </mat-form-field>
+            <mat-error>
+              <div *ngIf="employeeForm.get('email').invalid && (employeeForm.get('email').touched || employeeForm.get('email').dirty)" class="validation-msg">Please enter valid email id</div>
+            </mat-error>
+          </td>
+          <td class="tbl1">
+            <span>Gender</span>
+
+            <mat-radio-group matTooltip="Enter Gender" formControlName="gender">
+              <mat-radio-button value="0" [checked]="isMale">Male</mat-radio-button>
+              <mat-radio-button value="1" [checked]="isFeMale">Female</mat-radio-button>
+            </mat-radio-group>
+            <mat-error>
+              <div *ngIf="employeeForm.get('gender').invalid && (employeeForm.get('gender').touched || employeeForm.get('gender').dirty)" class="validation-msg">Select gender</div>
+            </mat-error>
+          </td>
+        </tr>
+        <tr>
+      
+          <td class="tbl1">
+            <label for="address">Address</label>
+            <br>
+            <mat-form-field class="fields">
+              <input formControlName="address" matInput autocomplete="off" required>
+            </mat-form-field>
+            <mat-error>
+              <div *ngIf="employeeForm.get('address').invalid && (employeeForm.get('address').touched || employeeForm.get('address').dirty)" class="validation-msg">Please enter address</div>
+            </mat-error>
+          </td>
+          <td class="tbl1">
+            <label for="company">Enter Company</label>
+            <br>
+            <mat-form-field class="fields">
+              <input formControlName="company" matInput autocomplete="off" required>
+            </mat-form-field>
+            <mat-error>
+              <div *ngIf="employeeForm.get('company').invalid && (employeeForm.get('company').touched || employeeForm.get('company').dirty)" class="validation-msg">Please enter company name</div>
+            </mat-error>
+          </td>
+          <td class="tbl1">
+            <label for="mobile">Enter Mobile</label>
+            <br>
+            <mat-form-field class="fields">
+              <input formControlName="mobile" matInput autocomplete="off" [pattern]="mobileNumberPattern" required>
+            </mat-form-field>
+            <mat-error>
+              <div *ngIf="employeeForm.get('mobile').invalid && (employeeForm.get('mobile').touched || employeeForm.get('mobile').dirty)" class="validation-msg">Please enter mobile</div>
+            </mat-error>
+          </td>
+          <td class="tbl1">
+            <label for="position">Enter Position</label>
+            <br>
+            <mat-form-field class="fields">
+              <input formControlName="position" matInput autocomplete="off" required>
+            </mat-form-field>
+            <mat-error>
+              <div *ngIf="employeeForm.get('position').invalid && (employeeForm.get('position').touched || employeeForm.get('position').dirty)" class="validation-msg">Please enter position</div>
+            </mat-error>
+          </td>
+        </tr>
+        <tr>
+          <td class="content-center">
+            <button type="submit" mat-raised-button class="submit-btn" color="primary" [disabled]="!employeeForm.valid">Submit</button>
+            <button type="reset" mat-raised-button color="accent" (click)="resetForm()">Reset</button>
+          </td>
+        </tr>
+      </table>
+    </mat-card>
+      <br><br>
+        <div class="search-block">
+          <label>Search Here</label>
+        <mat-form-field class="search-field">
+          <input matInput (keyup)="applyFilter($event.target.value)" type="text">
+        </mat-form-field>
+      </div>
+        <div>
+          <h2>Employee List</h2>
+          <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 table-mat-view" style="box-shadow: 0 3px 5px -1px rgba(0,0,0,.2), 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12);">
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Full Name </th>
+              <td mat-cell *matCellDef="let employee"> {{employee.name}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="email">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Email Id </th>
+              <td mat-cell *matCellDef="let employee"> {{employee.email}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="avatar">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Image </th>
+              <td mat-cell *matCellDef="let employee"> <img class="image-view" src={{employee.avatar}} alt="user image"></td>
+            </ng-container>
+
+            <ng-container matColumnDef="gender">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Gender </th>
+              <td mat-cell *matCellDef="let employee"> {{employee.gender ==0? 'Male' : 'Female'}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="mobile">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Mobile</th>
+              <td mat-cell *matCellDef="let employee"> {{employee.mobile}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="address">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Address </th>
+              <td mat-cell *matCellDef="let employee"> {{employee.address}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="company">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Company </th>
+              <td mat-cell *matCellDef="let employee"> {{employee.company}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="position">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Position </th>
+              <td mat-cell *matCellDef="let employee"> {{employee.position}} </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="Edit">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Edit </th>
+
+              <td mat-cell *matCellDef="let employee">
+
+                <button mat-icon-button aria-label="edit icon" type="button" mat-raised-button color="accent" matTooltip="Edit" (click)="loadEmployeeToEdit(employee.id)"><mat-icon>edit</mat-icon></button>
+
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Delete">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Delete </th>
+              <td mat-cell *matCellDef="let employee"> <button mat-icon-button aria-label="Example icon button with a delete icon" type="button" mat-raised-button color="accent" matTooltip="Delete" (click)="deleteEmployee(employee.id)"><mat-icon>delete</mat-icon></button></td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            
+          </table>
+          <mat-paginator class="paginator"  [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+        </div>
+
+     </form>
+    </mat-card-content>
+  </mat-card>
+</div>

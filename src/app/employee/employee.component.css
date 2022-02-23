@@ -1,0 +1,45 @@
+.image-view{
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+}
+.table-mat-view{
+    width: 100%;
+}
+.search-field{
+    border: 1px solid;
+    height: 30px;
+    line-height: 30px;
+    margin-bottom: 20px;
+}
+input{
+    padding-left: 10px;
+}
+.fields{
+    border: 1px solid;
+    height: 30px;
+    line-height: 30px;
+    margin-bottom: 20px;
+}
+::ng-deep .mat-radio-outer-circle{
+    border: 1px solid transparent;
+}
+::ng-deep .mat-error{
+    color: red;
+}
+.submit-btn{
+    margin-right: 10px;
+}
+::ng-deep .cdk-overlay-container{
+    position: relative;
+}
+::ng-deep .cdk-overlay-connected-position-bounding-box{
+    position: absolute;
+    top: 0px;
+    right: 18% !important;
+    height: unset !important;
+    width: unset !important;
+    left: unset !important;
+    margin-top: -25px;
+}
